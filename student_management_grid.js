@@ -40,10 +40,11 @@ Ext.onReady(function () {
     let data = [
         ['Felicity', 'Bering', 'female', 22, '1997-01-16', 'avatar1'],
         ['Jerry', 'Bering', 'male', 22, '1996-01-16', 'avatar2'],
-        ['Joi', 'Panama', 'female', 22, '1996-07-16', 'avatar3']
+        ['Joi', 'Panama', 'female', 22, '1996-07-16', 'avatar3'],
+        ['Mophy', 'Panama', 'female', 22, '1996-07-13', 'avatar4'],
     ];
     let store = new Ext.data.GroupingStore({
-        proxy: new Ext.data.MemoryProxy(data),
+        proxy: new Ext.data.PagingMemoryProxy(data),
         reader: new Ext.data.ArrayReader({}, [
             {name: 'name'},
             {name: 'class'},
@@ -54,13 +55,18 @@ Ext.onReady(function () {
         ]),
         groupField: 'class'
     });
-    store.load();
+    store.load({params: {start: 0, limit: 3}});
     let studentGrid = new Ext.grid.EditorGridPanel({
         cm: columnModel,
         sm: selectionModel,
         store: store,
         autoHeight: true,
         view: new Ext.grid.GroupingView(),
+        bbar: new Ext.PagingToolbar({
+            pageSize: 3,
+            store: store,
+            displayInfo: true
+        }),
         listeners: {
             afteredit: function() {
                 studentGrid.view.refresh();
