@@ -56,7 +56,48 @@ Ext.onReady(function () {
         groupField: 'class'
     });
     store.load({params: {start: 0, limit: 3}});
-    let studentGrid = new Ext.grid.EditorGridPanel({
+    let studentGrid;
+
+    function moveRowByChangeIndexFun(changeIndex) {
+        let selectedRecord = studentGrid.getSelectionModel().getSelected();
+        let currIndex = store.indexOf(selectedRecord);
+        store.remove(selectedRecord);
+        store.insert(changeIndex(currIndex), selectedRecord);
+        return {selectedRecord, currIndex};
+    }
+
+    let contextMenu = new Ext.menu.Menu({
+        items: [{
+            text: 'Up',
+            listeners: {
+                click: function () {
+                    moveRowByChangeIndexFun((item) => --item);
+                }
+            }
+        }, {
+            text: 'Down',
+            listeners: {
+                click: function () {
+                    moveRowByChangeIndexFun((item) => ++item);
+                }
+            }
+        }, {
+            text: 'First',
+            listeners: {
+                click: function() {
+                    moveRowByChangeIndexFun(() => 0);
+                }
+            }
+        }, {
+            text: 'Last',
+            listeners: {
+                click: function() {
+                    moveRowByChangeIndexFun(() => store.getCount());
+                }
+            }
+        }]
+    });
+    studentGrid = new Ext.grid.EditorGridPanel({
         cm: columnModel,
         sm: selectionModel,
         store: store,
@@ -68,8 +109,13 @@ Ext.onReady(function () {
             displayInfo: true
         }),
         listeners: {
-            afteredit: function() {
+            afteredit: function () {
                 studentGrid.view.refresh();
+            },
+            rowcontextmenu: function (grid, rowIndex, e) {
+                e.preventDefault();
+                grid.getSelectionModel().selectRow(rowIndex);
+                contextMenu.showAt(e.getXY());
             }
         }
     });
@@ -104,7 +150,7 @@ Ext.onReady(function () {
             }
         }, {
             text: 'Delete',
-            handler: function() {
+            handler: function () {
                 let selections = selectionModel.getSelections();
                 store.remove(selections);
             }
