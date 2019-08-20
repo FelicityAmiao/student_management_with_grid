@@ -34,14 +34,15 @@ Ext.onReady(function () {
         {
             header: 'avatar',
             dataIndex: 'avatar',
+            renderer: (item) => `<div style="height: 20px;"><img style="height: 100%;" src='${item}' /></div>`,
             editor: new Ext.grid.GridEditor(new Ext.form.TextField({allowBlank: false}))
         }
     ]);
     let data = [
-        ['Felicity', 'Bering', 'female', 22, '1997-01-16', 'avatar1'],
-        ['Jerry', 'Bering', 'male', 22, '1996-01-16', 'avatar2'],
-        ['Joi', 'Panama', 'female', 22, '1996-07-16', 'avatar3'],
-        ['Mophy', 'Panama', 'female', 22, '1996-07-13', 'avatar4'],
+        ['Felicity', 'Bering', 'female', 22, '1997-01-16', 'picture/user_male.png'],
+        ['Jerry', 'Bering', 'male', 22, '1996-01-16', 'picture/user_female.png'],
+        ['Joi', 'Panama', 'female', 22, '1996-07-16', 'picture/googleLogo.png'],
+        ['Mophy', 'Panama', 'female', 22, '1996-07-13', 'picture/github.png'],
     ];
     let store = new Ext.data.GroupingStore({
         proxy: new Ext.data.PagingMemoryProxy(data),
@@ -84,20 +85,21 @@ Ext.onReady(function () {
         }, {
             text: 'First',
             listeners: {
-                click: function() {
+                click: function () {
                     moveRowByChangeIndexFun(() => 0);
                 }
             }
         }, {
             text: 'Last',
             listeners: {
-                click: function() {
+                click: function () {
                     moveRowByChangeIndexFun(() => store.getCount());
                 }
             }
         }]
     });
     studentGrid = new Ext.grid.EditorGridPanel({
+        title: 'Student Info',
         cm: columnModel,
         sm: selectionModel,
         store: store,
