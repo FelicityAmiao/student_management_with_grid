@@ -41,8 +41,12 @@ Ext.onReady(function () {
     let data = [
         ['Felicity', 'Bering', 'female', 22, '1997-01-16', 'picture/user_male.png'],
         ['Jerry', 'Bering', 'male', 22, '1996-01-16', 'picture/user_female.png'],
+        ['Alvar', 'Bering', 'male', 22, '1996-01-16', 'picture/user_female.png'],
+        ['Daryl', 'Bering', 'male', 22, '1996-01-16', 'picture/user_female.png'],
         ['Joi', 'Panama', 'female', 22, '1996-07-16', 'picture/googleLogo.png'],
         ['Mophy', 'Panama', 'female', 22, '1996-07-13', 'picture/github.png'],
+        ['Jock', 'Panama', 'male', 22, '1996-07-13', 'picture/github.png'],
+        ['Jimmy', 'Panama', 'female', 22, '1996-07-13', 'picture/kulipa.png'],
     ];
     let store = new Ext.data.GroupingStore({
         proxy: new Ext.data.PagingMemoryProxy(data),
@@ -56,7 +60,7 @@ Ext.onReady(function () {
         ]),
         groupField: 'class'
     });
-    store.load({params: {start: 0, limit: 3}});
+    store.load({params: {start: 0, limit: 6}});
     let studentGrid;
 
     function moveRowByChangeIndexFun(changeIndex) {
@@ -106,7 +110,7 @@ Ext.onReady(function () {
         autoHeight: true,
         view: new Ext.grid.GroupingView(),
         bbar: new Ext.PagingToolbar({
-            pageSize: 3,
+            pageSize: 6,
             store: store,
             displayInfo: true
         }),
